@@ -1,0 +1,12 @@
+# Cloudflare Pages 部署設定
+# 專案名稱：使用費徵收案件管理平台
+
+name = "TIDP-SUFee"
+compatibility_date = "2024-01-01"
+
+# 建置輸出目錄（依專案框架調整：Vite 用 dist，Create React App 用 build）
+pages_build_output_dir = "dist"
+
+# 變數與 Secrets 在 Cloudflare Dashboard 設定
+# Secrets（敏感資料）: Workers & Pages > 專案 > Settings > Environment variables > Encrypt
+# 請新增 GEMINI_API_KEY

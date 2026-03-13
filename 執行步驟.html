@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub 部署步驟 - TIDP-SUFee</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Microsoft JhengHei', sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.25rem; margin-bottom: 1rem; }
+    .step { background: #f6f8fa; padding: 1rem; margin: 1rem 0; border-radius: 8px; }
+    .step h2 { font-size: 1rem; margin: 0 0 0.5rem 0; color: #0969da; }
+    button { background: #0969da; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; margin: 0.25rem 0.25rem 0.25rem 0; }
+    button:hover { background: #0550ae; }
+    code { background: #eee; padding: 0.1em 0.3em; border-radius: 4px; font-size: 0.9em; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 1rem; overflow-x: auto; border-radius: 6px; font-size: 0.85rem; }
+    input { width: 100%; padding: 0.5rem; margin: 0.5rem 0; border: 1px solid #ccc; border-radius: 4px; }
+    label { display: block; margin-top: 0.5rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🚀 TIDP-SUFee 部署步驟</h1>
+  <p>請輸入你的 GitHub 使用者名稱，然後依序點擊按鈕執行。</p>
+
+  <label>GitHub 使用者名稱：</label>
+  <input type="text" id="username" placeholder="例如：octocat">
+
+  <div class="step">
+    <h2>步驟 1：建立儲存庫</h2>
+    <p>點擊下方按鈕開啟 GitHub 建立新儲存庫頁面（名稱已預填 TIDP-SUFee）</p>
+    <button onclick="openCreateRepo()">開啟「建立儲存庫」頁面</button>
+  </div>
+
+  <div class="step">
+    <h2>步驟 2：推送程式碼</h2>
+    <p>在專案目錄開啟終端機，執行以下指令（請將 <code>你的帳號</code> 改為你的 GitHub 使用者名稱）：</p>
+    <pre id="gitCommands">git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/你的帳號/TIDP-SUFee.git
+git branch -M main
+git push -u origin main</pre>
+    <button onclick="copyCommands()">複製指令</button>
+  </div>
+
+  <div class="step">
+    <h2>步驟 3：設定 Secrets</h2>
+    <p>點擊按鈕開啟 Secrets 設定頁面，新增：</p>
+    <ul>
+      <li><code>CLOUDFLARE_API_TOKEN</code> - Cloudflare API Token</li>
+      <li><code>CLOUDFLARE_ACCOUNT_ID</code> - Cloudflare Account ID</li>
+    </ul>
+    <button onclick="openSecrets()">開啟 Secrets 設定頁面</button>
+  </div>
+
+  <div class="step">
+    <h2>步驟 4：執行部署</h2>
+    <p>設定完成後，點擊按鈕開啟 Actions 並手動執行 Deploy to Cloudflare Pages</p>
+    <button onclick="openActions()">開啟 Actions 並部署</button>
+  </div>
+
+  <script>
+    function getUser() {
+      const u = document.getElementById('username').value.trim();
+      return u || '你的帳號';
+    }
+    function openCreateRepo() {
+      window.open('https://github.com/new?name=TIDP-SUFee&description=使用費徵收案件管理平台', '_blank');
+    }
+    function openSecrets() {
+      const u = getUser();
+      if (u === '你的帳號') {
+        alert('請先輸入 GitHub 使用者名稱');
+        return;
+      }
+      window.open(`https://github.com/${u}/TIDP-SUFee/settings/secrets/actions`, '_blank');
+    }
+    function openActions() {
+      const u = getUser();
+      if (u === '你的帳號') {
+        alert('請先輸入 GitHub 使用者名稱');
+        return;
+      }
+      window.open(`https://github.com/${u}/TIDP-SUFee/actions`, '_blank');
+    }
+    function copyCommands() {
+      const u = getUser();
+      const cmd = `git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/${u}/TIDP-SUFee.git
+git branch -M main
+git push -u origin main`;
+      navigator.clipboard.writeText(cmd).then(() => alert('已複製到剪貼簿'));
+    }
+    document.getElementById('username').addEventListener('input', function() {
+      document.getElementById('gitCommands').textContent = `git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/${this.value.trim() || '你的帳號'}/TIDP-SUFee.git
+git branch -M main
+git push -u origin main`;
+    });
+  </script>
+</body>
+</html>
