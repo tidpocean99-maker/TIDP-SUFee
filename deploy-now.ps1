@@ -13,12 +13,13 @@ $GitPath = "C:\Program Files\Git\bin\git.exe"
 
 $RemoteUrl = "https://github.com/$Username/TIDP-SUFee.git"
 
-Write-Host "設定 remote origin: $RemoteUrl"
-& $GitPath -C $ProjectRoot remote remove origin 2>$null
+Write-Host "Setting remote: $RemoteUrl"
+$remotes = & $GitPath -C $ProjectRoot remote 2>$null
+if ($remotes -contains "origin") { & $GitPath -C $ProjectRoot remote remove origin 2>$null | Out-Null }
 & $GitPath -C $ProjectRoot remote add origin $RemoteUrl
 
-Write-Host "推送到 origin main..."
+Write-Host "Pushing to origin main..."
 & $GitPath -C $ProjectRoot push -u origin main
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "完成。"
+Write-Host "Done."
