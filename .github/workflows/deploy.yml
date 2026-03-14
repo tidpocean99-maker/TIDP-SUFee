@@ -1,9 +1,8 @@
 name: Deploy to Cloudflare Pages
 
+# 已停用：改為直接部署到 Cloudflare，不使用 GitHub Actions
 on:
-  push:
-    branches: [main, master]
-  workflow_dispatch:
+  workflow_dispatch:  # 僅手動觸發，push 不再觸發
 
 jobs:
   deploy:
